@@ -36,4 +36,4 @@ jobs:
         run: aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" && aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY" && aws configure set region us-east-1  # Change region accordingly
 
       - name: Deploy to AWS Lambda
-        run: aws lambda update-function-code --function-name my-lambda-function --zip-file fileb://bin/main.zip
+        run: aws lambda update-function-code --function-name parrot_main --zip-file fileb://bin/main.zip
