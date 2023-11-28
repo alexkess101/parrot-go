@@ -21,17 +21,13 @@ jobs:
       - name: Build Go Program
         run: go build -o bin/main ./main
 
-      - name: Archive Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: lambda-package
-          path: bin/main
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Configure AWS Credentials
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set region us-east-1  # Change region accordingly
 
       - name: Deploy to AWS Lambda
-        uses: appleboy/aws-action@v0.3.0
-        with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: us-east-1  # Change this to your AWS region
-          function_name: my-lambda-function  # Change this to your Lambda function name
-          zip_file: main
+        run: aws lambda update-function-code --function-name my-lambda-function --zip-file fileb://bin/main
