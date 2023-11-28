@@ -21,6 +21,9 @@ jobs:
       - name: Build Go Program
         run: go build -o bin/main ./main
 
+      - name: Zip Go Program
+        run: zip -j bin/main.zip bin/main
+
       - name: Install AWS CLI
         run: |
           sudo apt-get update
@@ -33,4 +36,4 @@ jobs:
         run: aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" && aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY" && aws configure set region us-east-1  # Change region accordingly
 
       - name: Deploy to AWS Lambda
-        run: aws lambda update-function-code --function-name my-lambda-function --zip-file fileb://bin/main
+        run: aws lambda update-function-code --function-name my-lambda-function --zip-file fileb://bin/main.zip
